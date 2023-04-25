@@ -11,7 +11,7 @@
       </div>
     </header>
     <div class="grid">
-      <div v-for="pokemon in filteredPokemons" :key="pokemon.name" class="col-4">
+      <div v-for="pokemon in filteredPokemons" :key="pokemon.name" class="sm:col-12 md:col-6 lg:col-4 xl:col-4">
         <div class="p-card">
           <div class="p-card-body">
             <img :src="pokemon.image" alt="Imagem do pokemon" />
