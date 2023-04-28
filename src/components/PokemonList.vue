@@ -85,6 +85,17 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
+@media only screen and (max-width: 600px) {
+  .sm\:col-12,
+  .md\:col-6,
+  .lg\:col-4,
+  .xl\:col-4 {
+    width: 100%;
+    margin-right: 0;
+    margin: 8px;
+  }
+}
+
 header {
   background-color: #f8f9fa;
   padding: 1rem;
