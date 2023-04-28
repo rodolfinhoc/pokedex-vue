@@ -11,6 +11,7 @@ import PrimeVue from 'primevue/config';
 import InputText from 'primevue/inputtext';
 import ProgressSpinner from 'primevue/progressspinner';
 import ProgressBar from 'primevue/progressbar';
+import Image from 'primevue/image';
 import { createApp } from 'vue';
 
 import App from './App.vue';
@@ -25,4 +26,5 @@ app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
 app.component('ProgressSpinner', ProgressSpinner);
 app.component('ProgressBar', ProgressBar);
+app.component('Image', Image);
 app.mount('#app');

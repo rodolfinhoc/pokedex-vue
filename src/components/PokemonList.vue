@@ -15,7 +15,7 @@
       <div v-for="pokemon in filteredPokemons" :key="pokemon.name" class="sm:col-12 md:col-6 lg:col-4 xl:col-4">
         <div class="p-card">
           <div class="p-card-body">
-            <img :src="pokemon.image" alt="Imagem do pokemon" />
+            <Image :src="pokemon.image" alt="Imagem do pokemon" width="250" preview/>
           </div>          
           <div class="p-card-footer">
             {{ pokemon.name }} #{{ pokemon.id }}
