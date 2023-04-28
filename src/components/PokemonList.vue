@@ -38,8 +38,16 @@ export default defineComponent({
       pokemons: [] as any[],
       searchTerm: '',
       isLoading: true,
+      selectedPokemon: null,
     };
   },
+  methods: {
+  showDetails(id: any) {
+    console.log(id);
+    // this.selectedPokemon = pokemon;
+    // abrir modal aqui
+  },
+},
 
   async created() {
     const pokemonService = new PokemonService();
