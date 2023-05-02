@@ -46,7 +46,7 @@ export default defineComponent({
     return {
       pokemons: [] as any[],
       searchTerm: "",
-      isLoading: true,
+      isLoading: false,
       selectedPokemon: null,
       generationOptions: [
         { label: "1ª Geração - Kanto", value: 1 },
@@ -100,21 +100,19 @@ export default defineComponent({
         case 9: //Paldea
           response = await pokemonService.getAllPokemon(905, 1008);
           break;
-        default:
+        default: //Default
           response = await pokemonService.getAllPokemon(0, 151);
           break;
       }
       this.pokemons = [];
       for (const pokemon of response) {
         const id = pokemon.url.split("/")[6];
-        const details = await pokemonService.getPokemonByID(id);
         this.pokemons.push({
           name: pokemon.name,
           image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
           image_shiny: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`,
           isShiny: "Normal",
           id,
-          details,
         });
       }
     setTimeout(() => {
