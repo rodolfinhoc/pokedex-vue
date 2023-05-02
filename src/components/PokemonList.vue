@@ -229,4 +229,5 @@ h1 {
 .float-right {
   float: right;
   margin: 12px;
-}</style>
+}
+</style>
