@@ -12,6 +12,8 @@ import InputText from 'primevue/inputtext';
 import ProgressSpinner from 'primevue/progressspinner';
 import ProgressBar from 'primevue/progressbar';
 import Image from 'primevue/image';
+import Dropdown from 'primevue/dropdown';
+import ToggleButton from 'primevue/togglebutton';
 import { createApp } from 'vue';
 
 import App from './App.vue';
@@ -27,4 +29,6 @@ app.component('AccordionTab', AccordionTab);
 app.component('ProgressSpinner', ProgressSpinner);
 app.component('ProgressBar', ProgressBar);
 app.component('Image', Image);
+app.component('Dropdown', Dropdown);
+app.component('ToggleButton', ToggleButton);
 app.mount('#app');
