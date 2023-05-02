@@ -73,7 +73,7 @@ export default defineComponent({
       const pokemonService = new PokemonService();
       const response = await pokemonService.getPokemonByGeneration(generation);
 
-      const pokemons = this.pokemons;
+      const pokemons = [];
       for (const pokemon of response) {
         const id = pokemon.url.split("/")[6];
         const details = await pokemonService.getPokemonByID(id);
@@ -105,7 +105,7 @@ export default defineComponent({
   },
 
   async created() {
-    this.loadPokemons(1);
+    await this.loadPokemons(1);
   },
 
   computed: {
