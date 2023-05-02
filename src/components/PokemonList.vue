@@ -71,13 +71,44 @@ export default defineComponent({
     },
     async loadPokemons(generation: number) {
       const pokemonService = new PokemonService();
-      const response = await pokemonService.getPokemonByGeneration(generation);
-
-      const pokemons = [];
+      let response;
+      switch(generation){
+        case 1: //Kanto
+          response = await pokemonService.getAllPokemon(0, 151);
+          break;
+        case 2: //Johto
+          response = await pokemonService.getAllPokemon(151, 100);
+          break;
+        case 3: //Hoenn
+          response = await pokemonService.getAllPokemon(251, 135);
+          break;
+        case 4: //Sinnoh
+          response = await pokemonService.getAllPokemon(386, 107);
+          break;
+        case 5: //Unova
+          response = await pokemonService.getAllPokemon(493, 156);
+          break;
+        case 6: //Kalos
+          response = await pokemonService.getAllPokemon(649, 72);
+          break;
+        case 7: //Alola
+          response = await pokemonService.getAllPokemon(721, 88);
+          break;  
+        case 8: //Galar
+          response = await pokemonService.getAllPokemon(809, 96);
+          break;
+        case 9: //Paldea
+          response = await pokemonService.getAllPokemon(905, 1008);
+          break;
+        default:
+          response = await pokemonService.getAllPokemon(0, 151);
+          break;
+      }
+      this.pokemons = [];
       for (const pokemon of response) {
         const id = pokemon.url.split("/")[6];
         const details = await pokemonService.getPokemonByID(id);
-        pokemons.push({
+        this.pokemons.push({
           name: pokemon.name,
           image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
           image_shiny: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`,
@@ -86,10 +117,10 @@ export default defineComponent({
           details,
         });
       }
-      this.pokemons = pokemons;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1000);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
+
     },
     async fetchPokemons(generation: number) {
       this.isLoading = true;
