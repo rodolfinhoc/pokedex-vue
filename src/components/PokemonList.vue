@@ -7,17 +7,19 @@
           <InputText type="text" v-model="searchTerm" placeholder="🔍 Buscar por nome ou #id" />
         </div>
         <div class="sm:col-12 md:col-2 lg:col-2 xl:col-2 w-100">
-          <Dropdown :options="generationOptions" v-model="selectedGeneration" optionLabel="label" @change="fetchPokemons(selectedGeneration.value)" />
+          <Dropdown :options="generationOptions" v-model="selectedGeneration" optionLabel="label"
+            @change="fetchPokemons(selectedGeneration.value)" />
         </div>
       </div>
     </header>
-    <ProgressBar v-if="isLoading" mode="indeterminate" style="height: 6px; margin: 12px;"/>
+    <ProgressBar v-if="isLoading" mode="indeterminate" style="height: 6px; margin: 12px;" />
     <div class="grid" v-if="!isLoading">
       <div v-for="pokemon in filteredPokemons" :key="pokemon.name" class="sm:col-12 md:col-6 lg:col-4 xl:col-4">
         <div class="p-card">
           <div class="p-card-header">
             <div class="float-left">
-              <SelectButton v-model="pokemon.isShiny" :options="selectOptions" @click="toggleImage(pokemon)" aria-labelledby="basic" />
+              <SelectButton v-model="pokemon.isShiny" :options="selectOptions" @click="toggleImage(pokemon)"
+                aria-labelledby="basic" />
             </div>
             <div class="float-right">
               <Button label="Detalhes" rounded outlined />
@@ -72,7 +74,7 @@ export default defineComponent({
     async loadPokemons(generation: number) {
       const pokemonService = new PokemonService();
       let response;
-      switch(generation){
+      switch (generation) {
         case 1: //Kanto
           response = await pokemonService.getAllPokemon(0, 151);
           break;
@@ -93,7 +95,7 @@ export default defineComponent({
           break;
         case 7: //Alola
           response = await pokemonService.getAllPokemon(721, 88);
-          break;  
+          break;
         case 8: //Galar
           response = await pokemonService.getAllPokemon(809, 96);
           break;
@@ -115,9 +117,9 @@ export default defineComponent({
           id,
         });
       }
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
 
     },
     async fetchPokemons(generation: number) {
@@ -161,6 +163,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @media only screen and (max-width: 600px) {
+
   .sm\:col-12,
   .md\:col-6,
   .lg\:col-4,
@@ -180,9 +183,11 @@ header {
 h1 {
   margin: 0;
 }
+
 .p-grid {
   margin-top: 2rem;
 }
+
 .p-card {
   border-radius: 10px;
 }
@@ -190,32 +195,38 @@ h1 {
 .p-card-body {
   text-align: center;
 }
+
 .p-card-body img {
   width: 50%;
   height: auto;
 }
+
 .p-card-footer {
   font-weight: bold;
   text-align: center;
   height: 3rem;
   font-size: 20px;
 }
+
 .p-card-footer::first-letter {
   text-transform: uppercase;
 }
+
 .p-inputtext,
 .p-dropdown {
   width: 100% !important;
 }
+
 .p-togglebutton.p-button {
   margin: 10px;
 }
+
 .float-left {
   float: left;
   margin: 12px;
 }
+
 .float-right {
   float: right;
   margin: 12px;
-}
-</style>
+}</style>
