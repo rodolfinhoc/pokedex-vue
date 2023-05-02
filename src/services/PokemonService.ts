@@ -39,4 +39,9 @@ export default class PokemonService {
   }
   return response.data.results;
   }
+
+  async getPokemonByID(id: number): Promise<any[]> {
+    const response = await axios.get(`${API_URL}/pokemon/${id}`);
+    return response.data;
+  }
 }
