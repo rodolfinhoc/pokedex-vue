@@ -22,7 +22,7 @@
                 aria-labelledby="basic" />
             </div>
             <div class="float-right">
-              <Button label="Detalhes" rounded outlined />
+              <Button label="Detalhes" @click="showDetails(pokemon.id)" rounded outlined />
             </div>
           </div>
           <div class="p-card-body">
@@ -38,40 +38,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import PokemonService from "@/services/PokemonService";
 
 export default defineComponent({
-  name: "PokemonList",
+  setup() {
+    const pokemons = ref([] as any[]);
+    const searchTerm = ref("");
+    const isLoading = ref(false);
+    const selectedPokemon = ref(null);
+    const generationOptions = [
+      { label: "1ª Geração - Kanto", value: 1 },
+      { label: "2ª Geração - Johto", value: 2 },
+      { label: "3ª Geração - Hoenn", value: 3 },
+      { label: "4ª Geração - Sinnoh", value: 4 },
+      { label: "5ª Geração - Unova", value: 5 },
+      { label: "6ª Geração - Kalos", value: 6 },
+      { label: "7ª Geração - Alola", value: 7 },
+      { label: "8ª Geração - Galar", value: 8 },
+      { label: "9ª Geração - Paldea", value: 9 },
+    ];
+    const selectedGeneration = ref({ label: "1ª Geração - Kanto", value: 1 });
+    const selectOptions = ["Normal", "Shiny"];
 
-  data() {
-    return {
-      pokemons: [] as any[],
-      searchTerm: "",
-      isLoading: false,
-      selectedPokemon: null,
-      generationOptions: [
-        { label: "1ª Geração - Kanto", value: 1 },
-        { label: "2ª Geração - Johto", value: 2 },
-        { label: "3ª Geração - Hoenn", value: 3 },
-        { label: "4ª Geração - Sinnoh", value: 4 },
-        { label: "5ª Geração - Unova", value: 5 },
-        { label: "6ª Geração - Kalos", value: 6 },
-        { label: "7ª Geração - Alola", value: 7 },
-        { label: "8ª Geração - Galar", value: 8 },
-        { label: "9ª Geração - Paldea", value: 9 },
-      ],
-      selectedGeneration: { label: "1ª Geração - Kanto", value: 1 },
-      selectOptions: ["Normal", "Shiny"],
-    };
-  },
-  methods: {
-    showDetails(id: any) {
+    const showDetails = (id: number) => {
       console.log(id);
-      // this.selectedPokemon = pokemon;
+      // selectedPokemon.value = pokemon;
       // abrir modal aqui
-    },
-    async loadPokemons(generation: number) {
+    };
+
+    const loadPokemons = async (generation: number) => {
       const pokemonService = new PokemonService();
       let response;
       switch (generation) {
@@ -106,10 +102,10 @@ export default defineComponent({
           response = await pokemonService.getAllPokemon(0, 151);
           break;
       }
-      this.pokemons = [];
+      pokemons.value = [];
       for (const pokemon of response) {
         const id = pokemon.url.split("/")[6];
-        this.pokemons.push({
+        pokemons.value.push({
           name: pokemon.name,
           image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
           image_shiny: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`,
@@ -118,52 +114,65 @@ export default defineComponent({
         });
       }
       setTimeout(() => {
-        this.isLoading = false;
+        isLoading.value = false;
       }, 1000);
+    };
 
-    },
-    async fetchPokemons(generation: number) {
-      this.isLoading = true;
-      this.loadPokemons(generation);
-    },
-    toggleImage(pokemon: any) {
+    const fetchPokemons = async (generation: number) => {
+      isLoading.value = true;
+      await loadPokemons(generation);
+    };
+
+    const toggleImage = (pokemon: any) => {
       if (pokemon.isShiny === "Shiny") {
         pokemon.image = pokemon.image_shiny;
       } else {
         pokemon.image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
       }
-    },
-  },
+    };
 
-  async created() {
-    await this.loadPokemons(1);
-  },
-
-  computed: {
-    filteredPokemons(): any[] {
-      const search = this.searchTerm.toLowerCase();
-      if (search.includes("#")) {
-        return this.pokemons.filter((pokemon: any) => {
-          if (search.includes("#") && search.split("").length > 1) {
+    const filteredPokemons = computed(() => {
+      const search = ref(searchTerm.value.toLowerCase());
+      if (search.value.includes("#")) {
+        return pokemons.value.filter((pokemon: any) => {
+          if (search.value.includes("#") && search.value.split("").length > 1) {
             return (
-              pokemon.id.toLowerCase() == search.replace("#", "").toLowerCase()
+              pokemon.id.toLowerCase() ==
+              search.value.replace("#", "").toLowerCase()
             );
           }
           return true;
         });
       } else {
-        return this.pokemons.filter((pokemon: any) =>
-          pokemon.name.toLowerCase().includes(search.toLowerCase())
+        return pokemons.value.filter((pokemon: any) =>
+          pokemon.name.toLowerCase().includes(search.value.toLowerCase())
         );
       }
-    },
+    });
+
+    onMounted(() => {
+      isLoading.value = true
+      loadPokemons(selectedGeneration.value.value)
+        .then(() => isLoading.value = false)
+    })
+    return {
+      isLoading,
+      searchTerm,
+      selectedPokemon,
+      generationOptions,
+      selectedGeneration,
+      selectOptions,
+      fetchPokemons,
+      toggleImage,
+      showDetails,
+      filteredPokemons
+    };
   },
 });
 </script>
 
 <style scoped lang="scss">
 @media only screen and (max-width: 600px) {
-
   .sm\:col-12,
   .md\:col-6,
   .lg\:col-4,
