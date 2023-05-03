@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import PokemonList from './components/PokemonList.vue';
+import PokemonList from './views/PokemonList.vue';
 
 @Options({
   components: {

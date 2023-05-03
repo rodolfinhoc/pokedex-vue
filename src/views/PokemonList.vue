@@ -35,18 +35,23 @@
       </div>
     </div>
   </div>
+
+  <DynamicDialog/>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
 import PokemonService from "@/services/PokemonService";
+import DetalhesComponent from "@/components/DetalhesComponent.vue";
+import { useDialog } from 'primevue/usedialog';
 
 export default defineComponent({
   setup() {
     const pokemons = ref([] as any[]);
     const searchTerm = ref("");
     const isLoading = ref(false);
-    const selectedPokemon = ref(null);
+    const selectedPokemon = ref(null);    
+    const dialog = useDialog();
     const generationOptions = [
       { label: "1ª Geração - Kanto", value: 1 },
       { label: "2ª Geração - Johto", value: 2 },
@@ -65,6 +70,19 @@ export default defineComponent({
       console.log(id);
       // selectedPokemon.value = pokemon;
       // abrir modal aqui
+      dialog.open(DetalhesComponent, {
+        props: {
+          header: 'Detalhes',
+          contentClass: 'modal',
+          modal: true,
+          dismissableMask: true,
+          draggable: false,
+          maximizable: true,
+          style: {
+            width: '70vw'
+          }
+        }
+      });
     };
 
     const loadPokemons = async (generation: number) => {
