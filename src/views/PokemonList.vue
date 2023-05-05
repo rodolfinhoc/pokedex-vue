@@ -236,6 +236,9 @@ h1 {
   font-size: 20px;
 }
 
+.p-card .p-card-footer {
+  padding: 0;
+}
 .p-card-footer::first-letter {
   text-transform: uppercase;
 }
