@@ -66,11 +66,12 @@ export default defineComponent({
     const selectedGeneration = ref({ label: "1ª Geração - Kanto", value: 1 });
     const selectOptions = ["Normal", "Shiny"];
 
-    const showDetails = (id: number) => {
+    const showDetails = async (id: number) => {      
+      const pokemonService = new PokemonService();
+      const data = await pokemonService.getPokemonByID(id);
       console.log(id);
-      // selectedPokemon.value = pokemon;
-      // abrir modal aqui
       dialog.open(DetalhesComponent, {
+        data,
         props: {
           header: 'Detalhes',
           contentClass: 'modal',
@@ -80,8 +81,8 @@ export default defineComponent({
           maximizable: true,
           style: {
             width: '70vw'
-          }
-        }
+          },
+        },
       });
     };
 

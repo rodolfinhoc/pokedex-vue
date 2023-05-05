@@ -6,18 +6,23 @@
   </template>
   
   <script lang="ts">
-  import { defineComponent } from "vue";
+  import { defineComponent, inject, toRaw } from 'vue';
   
   export default defineComponent({
     name: 'DetalhesComponent',
     props: {
-      title: {
-        type: String,
-        default: "",
+    },
+    setup(){
+      const dialogRef = inject('dialogRef') as any;
+      const pokemonDetalhes = toRaw(dialogRef.value.data);
+      return {
+        pokemonDetalhes
       }
-    }
+    },
   });
   </script>
   
   <style scoped lang="scss">
   </style>
+
+  
